@@ -3,7 +3,14 @@ import FormContainer from '../form/Form'
 import Table from '../table/Table'
 import './Home.css'
 import { db } from '../../auth/firebaseConfig'
-import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore'
+import {
+  collection,
+  getDocs,
+  addDoc,
+  deleteDoc,
+  doc,
+  // updateDoc,
+} from 'firebase/firestore'
 
 const Home = () => {
   const contactsCollectionRef = collection(db, 'contacts')
@@ -12,11 +19,16 @@ const Home = () => {
 
   const getContacts = async () => {
     const data = await getDocs(contactsCollectionRef)
-    console.log(data)
+
     setContactsList(data.docs.map(doc => ({ ...doc.data(), id: doc.id })))
   }
 
-  const updateContact = async () => {}
+  // const editContact = async (name, phone, gender, eId) => {
+  //   const userDoc = doc(db, 'contacts', eId)
+  //   const newFields = { name: name, phone: phone, gender: gender }
+  //   await updateDoc(userDoc, newFields)
+  //   getContacts()
+  // }
   const deleteContact = async id => {
     const contactDoc = doc(db, 'contacts', id)
     await deleteDoc(contactDoc)
@@ -35,7 +47,7 @@ const Home = () => {
     })
     getContacts()
   }
-  console.log(contactsList)
+
   return (
     <div
       className="   d-flex justify-content-center flex-column align-items-center"
@@ -46,16 +58,8 @@ const Home = () => {
           className="row 
   "
         >
-          <FormContainer
-            contactsList={contactsList}
-            createContact={createContact}
-            updateContact={updateContact}
-          />
-          <Table
-            contactsList={contactsList}
-            updateContact={updateContact}
-            deleteContact={deleteContact}
-          />
+          <FormContainer createContact={createContact} />
+          <Table contactsList={contactsList} deleteContact={deleteContact} />
         </div>
       </div>
     </div>

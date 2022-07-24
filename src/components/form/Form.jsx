@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 
 import { FaUserAlt, FaPhone } from 'react-icons/fa'
 
-const FormContainer = ({ contactsList, createContact, updateContact }) => {
+const FormContainer = ({ createContact }) => {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [gender, setGender] = useState('')
+
   const handleSubmit = e => {
     e.preventDefault()
     createContact(name, phone, gender)
@@ -42,6 +43,7 @@ const FormContainer = ({ contactsList, createContact, updateContact }) => {
                     opacity: '0.5',
                   }}
                 />
+
                 <input
                   type="text"
                   className="form-control mt-3 ps-4"
@@ -61,6 +63,7 @@ const FormContainer = ({ contactsList, createContact, updateContact }) => {
                     opacity: '0.5',
                   }}
                 />
+
                 <input
                   type="text"
                   className="form-control mt-3  ps-4"
@@ -94,6 +97,7 @@ const FormContainer = ({ contactsList, createContact, updateContact }) => {
                   <option value="other">Other</option>
                 </select>
               </div>
+
               <button
                 type="submit"
                 className="btn btn-info form-control text-white"

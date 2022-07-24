@@ -1,8 +1,7 @@
 import React from 'react'
 import { FaEdit, FaTrashAlt } from 'react-icons/fa'
 
-const Table = ({ contactsList, updateContact, deleteContact }) => {
-  const editContact = () => {}
+const Table = ({ contactsList, deleteContact }) => {
   const handleDelete = id => {
     deleteContact(id)
   }
@@ -39,16 +38,13 @@ const Table = ({ contactsList, updateContact, deleteContact }) => {
                     />
                   </td>
                   <td>
-                    <FaEdit
-                      onClick={editContact}
-                      style={{ cursor: 'pointer', color: '#ac8c01' }}
-                    />
+                    <FaEdit style={{ cursor: 'pointer', color: '#ac8c01' }} />
                   </td>
                 </tr>
               ))}
             {contactsList.length === 0 && (
               <tr>
-                <td colSpan="6">Please Add a Contact</td>{' '}
+                <td colSpan="6">Please Add a Contact</td>
               </tr>
             )}
           </tbody>
