@@ -3,7 +3,7 @@ import FormContainer from '../form/Form'
 import Table from '../table/Table'
 import './Home.css'
 import { db } from '../../auth/firebaseConfig'
-import { collection, getDocs, addDoc } from 'firebase/firestore'
+import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore'
 
 const Home = () => {
   const contactsCollectionRef = collection(db, 'contacts')
@@ -17,6 +17,11 @@ const Home = () => {
   }
 
   const updateContact = async () => {}
+  const deleteContact = async id => {
+    const contactDoc = doc(db, 'contacts', id)
+    await deleteDoc(contactDoc)
+    getContacts()
+  }
 
   useEffect(() => {
     getContacts()
@@ -46,7 +51,11 @@ const Home = () => {
             createContact={createContact}
             updateContact={updateContact}
           />
-          <Table contactsList={contactsList} updateContact={updateContact} />
+          <Table
+            contactsList={contactsList}
+            updateContact={updateContact}
+            deleteContact={deleteContact}
+          />
         </div>
       </div>
     </div>

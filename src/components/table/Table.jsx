@@ -1,8 +1,12 @@
 import React from 'react'
 import { FaEdit, FaTrashAlt } from 'react-icons/fa'
 
-const Table = ({ contactsList, updateContact }) => {
+const Table = ({ contactsList, updateContact, deleteContact }) => {
   const editContact = () => {}
+  const handleDelete = id => {
+    deleteContact(id)
+  }
+
   return (
     <div className=" col-md-8 col-xs-12 ">
       <div className="mx-5">
@@ -30,6 +34,7 @@ const Table = ({ contactsList, updateContact }) => {
                   <td>{user.gender}</td>
                   <td>
                     <FaTrashAlt
+                      onClick={() => handleDelete(user.id)}
                       style={{ cursor: 'pointer', color: '#fc6666' }}
                     />
                   </td>
