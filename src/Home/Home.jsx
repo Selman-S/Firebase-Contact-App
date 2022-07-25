@@ -73,12 +73,12 @@ const Home = () => {
   useEffect(() => {
     getContacts()
   }, [])
-  const handleEdit = (name, phone, gender, id) => {
-    setName(name)
-    setPhone(phone)
-    setGender(gender)
+  const handleEdit = user => {
+    setName(user.name)
+    setPhone(user.phone)
+    setGender(user.gender)
     setEditState(true)
-    setEditId(id)
+    setEditId(user.id)
   }
 
   return (
@@ -227,14 +227,7 @@ const Home = () => {
                         </td>
                         <td>
                           <FaEdit
-                            onClick={() =>
-                              handleEdit(
-                                user.name,
-                                user.phone,
-                                user.gender,
-                                user.id
-                              )
-                            }
+                            onClick={() => handleEdit(user)}
                             style={{ cursor: 'pointer', color: '#ac8c01' }}
                           />
                         </td>
