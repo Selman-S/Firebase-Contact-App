@@ -10,7 +10,7 @@ import {
   addDoc,
   deleteDoc,
   doc,
-  // updateDoc,
+  updateDoc,
 } from 'firebase/firestore'
 
 const Home = () => {
@@ -18,18 +18,30 @@ const Home = () => {
   const [phone, setPhone] = useState('')
   const [gender, setGender] = useState('')
   const contactsCollectionRef = collection(db, 'contacts')
+  const [contactsList, setContactsList] = useState([])
+  const [editState, setEditState] = useState(false)
+  const [editId, setEditId] = useState(0)
+
   const getContacts = async () => {
     const data = await getDocs(contactsCollectionRef)
 
     setContactsList(data.docs.map(doc => ({ ...doc.data(), id: doc.id })))
   }
-  const [contactsList, setContactsList] = useState([])
+
   const handleSubmit = e => {
     e.preventDefault()
-    createContact(name, phone, gender)
-    setName('')
-    setPhone('')
-    setGender('')
+    if (editState) {
+      editContact(name, phone, gender, editId)
+      setName('')
+      setPhone('')
+      setGender('')
+      setEditState(false)
+    } else {
+      createContact(name, phone, gender)
+      setName('')
+      setPhone('')
+      setGender('')
+    }
   }
   const handleDelete = id => {
     deleteContact(id)
@@ -44,12 +56,14 @@ const Home = () => {
     getContacts()
   }
 
-  // const editContact = async (name, phone, gender, eId) => {
-  //   const userDoc = doc(db, 'contacts', eId)
-  //   const newFields = { name: name, phone: phone, gender: gender }
-  //   await updateDoc(userDoc, newFields)
-  //   getContacts()
-  // }
+  const editContact = async (name, phone, gender, editId) => {
+    const userDoc = doc(db, 'contacts', editId)
+    const newFields = { name: name, phone: phone, gender: gender }
+    await updateDoc(userDoc, newFields)
+    getContacts()
+  }
+
+  console.log(editId, editState)
   const deleteContact = async id => {
     const contactDoc = doc(db, 'contacts', id)
     await deleteDoc(contactDoc)
@@ -59,6 +73,13 @@ const Home = () => {
   useEffect(() => {
     getContacts()
   }, [])
+  const handleEdit = (name, phone, gender, id) => {
+    setName(name)
+    setPhone(phone)
+    setGender(gender)
+    setEditState(true)
+    setEditId(id)
+  }
 
   return (
     <div
@@ -151,18 +172,29 @@ const Home = () => {
                         <option value="other">Other</option>
                       </select>
                     </div>
-
-                    <button
-                      type="submit"
-                      className="btn btn-info form-control text-white"
-                    >
-                      Add
-                    </button>
+                    {editId ? (
+                      <button
+                        type="submit"
+                        className="btn btn-info form-control text-white"
+                      >
+                        Add
+                      </button>
+                    ) : (
+                      <button
+                        type="submit"
+                        className="btn btn-info form-control text-white"
+                      >
+                        Edit
+                      </button>
+                    )}
                   </div>
                 </form>
               </div>
             </div>
           </div>
+
+          {/* table */}
+
           <div className=" col-md-8 col-xs-12 ">
             <div className="mx-5">
               <label htmlFor="" className="bg-white form-control mb-4">
@@ -195,6 +227,14 @@ const Home = () => {
                         </td>
                         <td>
                           <FaEdit
+                            onClick={() =>
+                              handleEdit(
+                                user.name,
+                                user.phone,
+                                user.gender,
+                                user.id
+                              )
+                            }
                             style={{ cursor: 'pointer', color: '#ac8c01' }}
                           />
                         </td>
