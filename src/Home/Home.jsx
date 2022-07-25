@@ -172,19 +172,19 @@ const Home = () => {
                         <option value="other">Other</option>
                       </select>
                     </div>
-                    {editId ? (
+                    {editState ? (
                       <button
                         type="submit"
                         className="btn btn-info form-control text-white"
                       >
-                        Add
+                        Edit
                       </button>
                     ) : (
                       <button
                         type="submit"
                         className="btn btn-info form-control text-white"
                       >
-                        Edit
+                        Add
                       </button>
                     )}
                   </div>
